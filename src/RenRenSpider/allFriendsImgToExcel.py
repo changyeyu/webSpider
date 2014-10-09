@@ -5,20 +5,25 @@ Created on 2014-10-8
 功能：从网页抓取图片，之后保存到excel表格
 @author: fish
 '''
-import re
+
 import os
 import sys
 import requests
 from xlrd import *
 from xlwt import *
+from _codecs import decode
 
 import Image
+
 '''
 PIL 图形处理库：
 Windows 下，下载 PIL for Windows only不然会提醒：pil IOError: decoder zip not available
 Linux下，下载 all platforms，需要安装apt-get install libjpeg8 
 libjpeg62-dev libfreetype6 libfreetype6-dev
 '''
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 parentDir = os.path.split(sys.path[0])[0]
 sys.path.append( parentDir + './automation' )
@@ -130,7 +135,7 @@ def getAllFriendsInfo(tmpDir, imgDir, hostName, fDict):
     imgProcess(imgDir, friendId)
     saveToExcel(tmpDir, imgDir, hostName, fDict)   
 
-def main():
+def getAllFriendsInfoAct():
     imgUrl = 'http://www.baidu.com/img/bd_logo1.png'
     tmpDir = '.\\tmp\\'
     imgDir = tmpDir + '\\img\\'
@@ -139,7 +144,10 @@ def main():
              'e':('xian','55'), 'f':('xian','66'),  'g':('Shenzhen','77'), 'h':('xian','88')}
     
     hostName = '主人'
-    getAllFriendsInfo(tmpDir, imgDir, hostName, fDict)
+    getAllFriendsInfo(tmpDir, imgDir, hostName, fDict)    
+
+def main():
+    getAllFriendsInfoAct()
     
 if '__main__' == __name__:
     main()
