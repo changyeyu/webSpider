@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 #coding:utf-8
-
 '''
-Created on 2014年10月6日
-
-@author: fish
+date:        2014/10/6
+brief：            从网页抓取图片，之后保存到excel表格
+author:      fish
 '''
+
 import re
 import re 
 import sys
@@ -66,8 +66,8 @@ def gossip(s, fDict):
                   }
   
     res=s.post(gossipUrl, gossipData)
-    print '给 ' + name + ' 留言成功！'
-    print '留言内容： ' +  gossipText   
+    print 'Leave message to \"' + name + '\"success!'
+    print 'Message： ' +  gossipText   
 
 def gossipAct():
     #1.登陆

@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 #coding:utf-8
-
 '''
-Created on 2014年10月6日
-
-@author: fish
+date:        2014/10/6
+brief：            从网页抓取图片，之后保存到excel表格
+author:      fish
 '''
+
 import re
 import re 
 import sys
@@ -38,8 +38,6 @@ def login( passportDict ):
     f=open('E:\\python\\tmp\\doc\\loginData.txt','w+')  
     f.write(file)  
     f.close()      
-    
-#  profile.do?id=263045375" class="name" title="余昌叶"
      
     findHostRe = re.compile(r"profile\.do\?id=(\d+).*?name.{1,4}title=.(.*?).\>", re.DOTALL)
       
@@ -48,8 +46,8 @@ def login( passportDict ):
     hostId = info[0][0]
     hostName = info[0][1].decode('utf-8')   
     
-    print '账号：' + passportDict['email'] + ' 登陆成功！'
-    print '账户实名： ' + hostName
+    print 'Account：' + passportDict['email'] + ' login success！'
+    print 'Host name： ' + hostName
     print 
         
     fDict = {} 

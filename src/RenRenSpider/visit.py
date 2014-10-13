@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 #coding:utf-8
-
 '''
-Created on 2014年10月6日
-
-@author: fish
+date:        2014/10/6
+brief：            从网页抓取图片，之后保存到excel表格
+author:      fish
 '''
+
 import re
 import re 
 import sys

@@ -1,9 +1,9 @@
 #-*- coding: utf-8 -*-
 #usr/bin/env python
 '''
-Created on 2014-10-8
-功能：从网页抓取图片，之后保存到excel表格
-@author: fish
+date:        2014/10/8
+brief：            从网页抓取图片，之后保存到excel表格
+author:      fish
 '''
 
 import os
@@ -30,7 +30,7 @@ sys.path.append( parentDir + './automation' )
 
 def saveImg(imgUrl, imgDir, friendId):
     '''
-        功能：从网页抓取图片并保存至本地
+    brief：从网页抓取图片并保存至本地
     '''
     file = requests.get(imgUrl)
 
@@ -40,8 +40,8 @@ def saveImg(imgUrl, imgDir, friendId):
 
 def saveToExcel(tmpDataDir, imgDir, hostName, fDict):
     '''
-        功能：将图片保存到excel表格
-        说明：参考百度文库：python使用xlwt编辑excel
+    brief：将图片保存到excel表格
+                    参考百度文库：python使用xlwt编辑excel
     '''
     maxColNum = 6
     
@@ -116,7 +116,7 @@ def saveToExcel(tmpDataDir, imgDir, hostName, fDict):
     
 def imgProcess(imgDir, friendId):
     '''
-        功能：将图片转为为24位bmp位图，因为xlwt只支持这种格式
+    brief：将图片转为为24位bmp位图，因为xlwt只支持这种格式
     '''
     im = Image.open(imgDir + friendId + '.bmp')
 #    im = im.resize((250, 250))
@@ -126,7 +126,7 @@ def imgProcess(imgDir, friendId):
 
 def getAllFriendsInfo(tmpDir, imgDir, hostName, fDict):
     '''
-        功能：抓取所有好友的图片等信息
+    brief：抓取所有好友的图片等信息
     '''
     for name in fDict:
         friendId = fDict[name][1]

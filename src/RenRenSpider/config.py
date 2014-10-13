@@ -2,9 +2,9 @@
 #coding:utf-8
 
 '''
-Created on 2014年10月6日
-功能：账户名、密码
-@author: fish
+date:        2014/10/6
+brief：            keep the account and passwd
+author:      fish
 '''
 def getPassWd():
 
