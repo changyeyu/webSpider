@@ -7,13 +7,13 @@ author:      fish
 '''
 
 import re
-import re 
 import sys
 import requests
 import time
 from _codecs import decode
 
 from config import *
+from getPassport import *
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -35,9 +35,9 @@ def login( passportDict ):
 
     file = res.text.encode('utf-8') 
     
-    f=open('E:\\python\\tmp\\doc\\loginData.txt','w+')  
-    f.write(file)  
-    f.close()      
+    with open(tmpDir + 'hostData.txt','w+') as f: 
+        f.write(file)  
+        f.close()      
      
     findHostRe = re.compile(r"profile\.do\?id=(\d+).*?name.{1,4}title=.(.*?).\>", re.DOTALL)
       

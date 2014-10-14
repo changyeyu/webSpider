@@ -9,6 +9,8 @@ author:      fish
 import sys
 from _codecs import decode
 
+from config import *
+from getPassport import *
 from login import *
 from visit import *
 from leaveMessage import *
@@ -18,10 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 def main():
-    imgUrl = 'http://www.baidu.com/img/bd_logo1.png'
-    tmpDir = '.\\tmp\\'
-    imgDir = tmpDir + '\\img\\'
-    
+
     choiceDict = {
                   '1' : loginAct,
                   '2' : visitAct,
@@ -45,14 +44,17 @@ def main():
             
           '''
 
-    choice = raw_input('Input your choice:')
-    
-    while((choice < '1') or (choice > '5')):
-        choice = raw_input('Input Error! Input your choice again:')
-
-    choiceDict.get(choice)()
-    
-    
+    while True:
+        try:
+            choice = raw_input('Input your choice:')
+            choiceDict[choice]()       
+#            choiceDict.get(choice)()            
+        except Exception,e:
+            print 'Input Error!'
+            print Exception,':',e
+        else:
+            break
+  
 if '__main__' == __name__:
     main()
     

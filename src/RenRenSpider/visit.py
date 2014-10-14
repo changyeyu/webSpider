@@ -7,11 +7,12 @@ author:      fish
 '''
 
 import re
-import re 
 import sys
 import requests
 import time
 from _codecs import decode
+
+from config import *
 from login import login
 
 reload(sys)
@@ -23,29 +24,26 @@ def getFriends(s, fDict):
     count = 0
     #判断抓取的网页内编码是否已经是Unicode，如果是，则重新获取网页。因为本网页会随机返回Unicode或者其他编码 
     
-    fData=open('E:\\python\\tmp\\doc\\fData.txt','w+')      
+    fData=open('friendInfo.txt','w+')      
     while(unicodeFlag):
         res = s.get('http://friend.renren.com/groupsdata')
         
         #编码为utf-8
         file = res.text.encode('utf-8') 
-        
-        f=open('E:\\python\\tmp\\doc\\1.txt','w+')  
-        f.write(file)  
-        f.close()      
-        
-        f = open('E:\\python\\tmp\\doc\\1.txt','r+')  
-        reFriend = re.compile(r"fid.?:(\d*?),.?ti.*?fname.?:.?(.*?).?,.?info.?:.?(.*?).?,", re.DOTALL)  
-        
-        fList = reFriend.findall(f.read())
-        
-
-
+        with open(tmpDir + 'OriginalFriendGroup.txt','w+') as f:  
+            f.write(file)  
+            f.close()     
+      
+#        with open('E:\\python\\tmp\\doc\\1.txt','r+') as f:          
+#            fList = reFriend.findall(f.read())         
+    
+        reFriend = re.compile(r"fid.?:(\d*?),.?ti.*?fname.?:.?(.*?).?,.?info.?:.?(.*?).?,", re.DOTALL)             
+        fList = reFriend.findall(file)  
+              
         friendNum = fList.__len__()
     
         if '\u' == fList[0][1][:2]: 
             unicodeFlag = True
-            time.sleep(0.1)
         else:
             unicodeFlag = False
             

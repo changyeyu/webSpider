@@ -8,25 +8,23 @@ author:      fish
 
 import os
 import sys
+import Image
 import requests
 from xlrd import *
 from xlwt import *
 from _codecs import decode
 
-import Image
+from config import *
 
 '''
-PIL 图形处理库：
-Windows 下，下载 PIL for Windows only不然会提醒：pil IOError: decoder zip not available
-Linux下，下载 all platforms，需要安装apt-get install libjpeg8 
-libjpeg62-dev libfreetype6 libfreetype6-dev
+    PIL 图形处理库：
+    Windows 下，下载 PIL for Windows only不然会提醒：pil IOError: decoder zip not available
+    Linux下，下载 all platforms，需要安装apt-get install libjpeg8 
+    libjpeg62-dev libfreetype6 libfreetype6-dev
 '''
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
-parentDir = os.path.split(sys.path[0])[0]
-sys.path.append( parentDir + './automation' )
 
 def saveImg(imgUrl, imgDir, friendId):
     '''
@@ -34,9 +32,9 @@ def saveImg(imgUrl, imgDir, friendId):
     '''
     file = requests.get(imgUrl)
 
-    f = open(imgDir + friendId + '.bmp', 'wb')
-    f.write(file.content)
-    f.close()
+    with open(imgDir + friendId + '.bmp', 'wb') as f:
+        f.write(file.content)
+        f.close()
 
 def saveToExcel(tmpDataDir, imgDir, hostName, fDict):
     '''
@@ -136,10 +134,7 @@ def getAllFriendsInfo(tmpDir, imgDir, hostName, fDict):
     saveToExcel(tmpDir, imgDir, hostName, fDict)   
 
 def getAllFriendsInfoAct():
-    imgUrl = 'http://www.baidu.com/img/bd_logo1.png'
-    tmpDir = '.\\tmp\\'
-    imgDir = tmpDir + '\\img\\'
-        
+ 
     fDict = {'a':('xian','11'), 'b':('xian','22'), 'c':('Shenzhen','33'), 'd':('xian','44'),
              'e':('xian','55'), 'f':('xian','66'),  'g':('Shenzhen','77'), 'h':('xian','88')}
     

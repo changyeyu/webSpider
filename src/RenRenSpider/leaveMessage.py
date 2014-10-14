@@ -7,11 +7,12 @@ author:      fish
 '''
 
 import re
-import re 
 import sys
 import requests
 import time
 from _codecs import decode
+
+from config import *
 from login import login
 from visit import getFriends
 
@@ -45,9 +46,9 @@ def gossip(s, fDict):
     reInfo = re.compile(r"get_check:'(.*?)',get_check_x:'(.*?)'", re.DOTALL)  
     info = reInfo.findall(file)  
     
-    f=open('E:\\python\\tmp\\doc\\2.txt','w+')  
-    f.write(file)  
-    f.close()        
+    with open(tmpDir + 'friendProfile.txt','w+') as f: 
+        f.write(file)  
+        f.close()        
     
     tok  = info[0][0]  
     rtk  = info[0][1]

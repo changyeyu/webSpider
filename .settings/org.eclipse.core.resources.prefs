@@ -1,6 +1,8 @@
+#Tue Oct 14 14:15:53 CST 2014
 eclipse.preferences.version=1
 encoding//src/RenRenSpider/allFriendsImgToExcel.py=utf-8
 encoding//src/RenRenSpider/config.py=utf-8
+encoding//src/RenRenSpider/getPassport.py=utf-8
 encoding//src/RenRenSpider/leaveMessage.py=utf-8
 encoding//src/RenRenSpider/login.py=utf-8
 encoding//src/RenRenSpider/main.py=utf-8
