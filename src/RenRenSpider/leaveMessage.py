@@ -32,6 +32,9 @@ def gossip(s, fDict):
     
     name = raw_input('\nInput the name who you want to leave a message:')
     try:
+        '''Windows CMD编码为“gb2312”，如果不能解码则用“utf-8”，eclipse运行无乱码，
+            在CMD下会有，或者无法执行。
+        '''
         name = name.decode('gb2312')
     except Exception:
         name = name.decode('utf-8')  
