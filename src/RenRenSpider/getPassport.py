@@ -2,7 +2,7 @@
 #coding:utf-8
 '''
 date:        2014/10/6
-brief：            get the account and passwd
+brief:        get the account and passwd
 author:      fish
 '''
 

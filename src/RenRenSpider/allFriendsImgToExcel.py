@@ -2,7 +2,7 @@
 #usr/bin/env python
 '''
 date:        2014/10/8
-brief：            从网页抓取图片，之后保存到excel表格
+brief:        从网页抓取图片，之后保存到excel表格
 author:      fish
 '''
 
@@ -15,7 +15,11 @@ from xlwt import *
 from _codecs import decode
 
 from config import *
-
+from getPassport import *
+from login import *
+from visit import *
+from leaveMessage import *
+from random import choice
 '''
     PIL 图形处理库：
     Windows 下，下载 PIL for Windows only不然会提醒：pil IOError: decoder zip not available
@@ -28,15 +32,37 @@ sys.setdefaultencoding('utf-8')
 
 def saveImg(imgUrl, imgDir, friendId):
     '''
-    brief：从网页抓取图片并保存至本地
+    brief：从网页抓取好友小头像并保存至本地
     '''
     file = requests.get(imgUrl)
 
-    with open(imgDir + friendId + '.bmp', 'wb') as f:
+    with open(imgDir + friendId + '.jpg', 'wb') as f:
+        f.write(file.content)
+        f.close()
+#     im = Image.open(imgDir + friendId + '.bmp')    
+#     im.save(imgDir + friendId + '.bmp', "bmp" )        
+
+def cvtImg(photoUrl, photoDir, imgDir, friendId, friendName):
+    '''
+    brief：转换图片格式，用于Excel表格保存
+    '''
+    try:
+        im = Image.open(photoDir + friendName + '.jpg')    
+        im.save(imgDir + friendId + '.bmp', "bmp" ) 
+    except Exception:
+        pass
+    
+def savePhoto(photoUrl, photoDir, friendName):
+    '''
+    brief：从网页抓取好友大图并保存至本地
+    '''
+    file = requests.get(photoUrl)
+
+    with open(photoDir + friendName + '.jpg', 'wb') as f:
         f.write(file.content)
         f.close()
 
-def saveToExcel(tmpDataDir, imgDir, hostName, fDict):
+def saveToExcel(tmpDir, imgDir, hostName, fDict):
     '''
     brief：将图片保存到excel表格
                     参考百度文库：python使用xlwt编辑excel
@@ -95,8 +121,11 @@ def saveToExcel(tmpDataDir, imgDir, hostName, fDict):
         friendId = fDict[name][1]
         friendPlace = fDict[name][0] 
         sheet.write(rowNum, colNum, '', style)
-        #sheet.insert_bitmap(图片, 行, 列, 图片向下偏移, 图片向右偏移, 横向缩放, 纵向缩放)   
-        sheet.insert_bitmap(imgDir + friendId + '.bmp', rowNum, colNum, 2, 2, 0.2, 0.2)      
+        #sheet.insert_bitmap(图片, 行, 列, 图片向下偏移, 图片向右偏移, 横向缩放, 纵向缩放)  
+        try: 
+            sheet.insert_bitmap(imgDir + friendId + '.bmp', rowNum, colNum, 2, 2, 1, 1)      
+        except Exception:
+            pass
         
         #图片下方注释
         sheet.write((rowNum + 1), colNum, (str(count) + '. ' + name +  ' ' + friendPlace), textStyle)
@@ -107,42 +136,80 @@ def saveToExcel(tmpDataDir, imgDir, hostName, fDict):
             rowNum = rowNum + 2
 
     #保存excel表格
-    friendWorkBook.save(tmpDataDir + hostName + u'的人人网好友.xls')
+    friendWorkBook.save(tmpDir + hostName + u'的人人网好友.xls')
 
     print 'Your friends list saved to: '
-    print os.path.dirname(__file__) + imgDir + hostName + '的人人网好友.xls'
+    print os.path.dirname(__file__) + tmpDir + hostName + '的人人网好友.xls'
+    print '\n打开Excel表格:' + hostName + '的人人网好友.xls' + '  吗?'
+    choice = raw_input('(\'y\' or \'n\'):')
+    if 'y' == choice:
+        os.startfile(tmpDir + hostName + '的人人网好友.xls')
     
 def imgProcess(imgDir, friendId):
     '''
     brief：将图片转为为24位bmp位图，因为xlwt只支持这种格式
     '''
-    im = Image.open(imgDir + friendId + '.bmp')
-#    im = im.resize((250, 250))
-#    im = im.rotate(45)    
-    out = im.convert('RGB')
-    out.save(imgDir + friendId + '.bmp')
+    try:
+        im = Image.open(imgDir + friendId + '.bmp')
+        im = im.resize((160, 160))
+        out = im.convert('RGB')
+        out.save(imgDir + friendId + '.bmp')
+    except Exception:
+        pass
 
 def getAllFriendsInfo(tmpDir, imgDir, hostName, fDict):
     '''
     brief：抓取所有好友的图片等信息
     '''
+
+    friendNum = len(fDict)
+    count = 0
     for name in fDict:
         friendId = fDict[name][1]
-        imgUrl = 'http://www.baidu.com/img/bd_logo1.png' + friendId + '.jpg'
-#        saveImg(imgUrl, imgDir, friendId)
-    imgProcess(imgDir, friendId)
+        friendName = name
+        friendInfo = fDict[name][0]
+        
+        #用于Excel表格存储的小头像
+        imgUrl = fDict[name][3]
+#         saveImg(imgUrl, imgDir, friendId)
+         
+        #好友大图
+        photoUrl = fDict[name][2]
+        savePhoto(photoUrl, photoDir, friendName)
+        
+        cvtImg(photoUrl, photoDir, imgDir, friendId, friendName)
+        
+        print ('Saving friend photo : (%.2f %%)'%(100.00 * count/friendNum)), name  
+            
+        imgProcess(imgDir, friendId)
+        count = count + 1
+        
+    print 'Total: ' + str( count ) + 'friends\' photo have been saved!' 
+
+    print 'Your friends photo saved to: '
+    print os.path.dirname(__file__) + photoDir
+    print '=' * 40    
+    
+    print '\nWait for a while... Your friend Excel table is cooking...'   
     saveToExcel(tmpDir, imgDir, hostName, fDict)   
+    
+    #打开好友大图文件夹
+    os.startfile(photoDir)
 
 def getAllFriendsInfoAct():
- 
-    fDict = {'a':('xian','11'), 'b':('xian','22'), 'c':('Shenzhen','33'), 'd':('xian','44'),
-             'e':('xian','55'), 'f':('xian','66'),  'g':('Shenzhen','77'), 'h':('xian','88')}
+    #1.登陆
+    passportDict = getPassWd()
+    (hostName, hostId, s, fDict) = login(passportDict)
     
-    hostName = '主人'
+    #2.获取朋友列表 
+    fDict = getFriends(s, fDict)
+    
+    #3.保存好友信息,删除自己
+    del fDict[hostName]
     getAllFriendsInfo(tmpDir, imgDir, hostName, fDict)    
 
 def main():
-    getAllFriendsInfoAct()
+    getAllFriendsInfoAct() 
     
 if '__main__' == __name__:
     main()

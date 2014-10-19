@@ -2,7 +2,7 @@
 #coding:utf-8
 '''
 date:        2014/10/8
-brief：            从网页抓取图片，之后保存到excel表格
+brief:        从网页抓取图片，之后保存到excel表格
 author:      fish
 '''
 
@@ -26,7 +26,7 @@ def main():
                   '2' : visitAct,
                   '3' : gossipAct,
                   '4' : getAllFriendsInfoAct,
-                  '5' : exit
+                  '5' : sys.exit
                   }
         
     fDict = {'a':('xian','11'), 'b':('xian','22'), 'c':('Shenzhen','33'), 'd':('xian','44'),
@@ -54,7 +54,7 @@ def main():
             print Exception,':',e
         else:
             break
-  
+    raw_input('\nPress to exit...')
 if '__main__' == __name__:
     main()
     
